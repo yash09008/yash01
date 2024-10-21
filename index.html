@@ -3,10 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Coin Tap with Milestone Progress & Boost</title>
+  <title>X Empire Clone</title>
   <style>
     body {
-      background: linear-gradient(145deg, black, yellow);
+      background: #333;
+      color: white;
       font-family: Arial, sans-serif;
       text-align: center;
       margin: 0;
@@ -16,361 +17,148 @@
 
     .container {
       padding: 20px;
-      max-width: 400px;
       margin: 50px auto;
+      max-width: 600px;
       background: rgba(255, 255, 255, 0.1);
       border-radius: 10px;
       box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
-      color: black;
-      position: relative;
-      z-index: 2;
     }
 
-    .coin-section {
-      position: relative;
+    .coin-section, .task-section, .upgrade-section {
+      margin-bottom: 30px;
     }
 
-    .coin {
-      width: 150px;
-      height: 150px;
-      background-image: url('https://cdn.glitch.global/d15f766a-ac8c-42bb-a4df-84072196794e/Picsart_24-09-15_16-31-09-188.png?v=1726398159767');
-      background-size: cover;
-      margin: 20px auto;
-      cursor: pointer;
-      border: none;
-      outline: none;
-      user-select: none;
-      -webkit-tap-highlight-color: transparent;
-      position: relative;
-    }
-
-    .gold-text {
-      font-size: 2.5em;
-    }
-
-    .stats {
-      font-size: 1.2em;
-      margin: 20px 0;
-    }
-
-    .links {
-      display: flex;
-      justify-content: space-around;
-      margin: 20px 0;
-    }
-
-    .link-item {
-      cursor: pointer;
-      text-decoration: none;
-      color: inherit;
-      font-size: 1.5em;
-      background: #FFD700;
-      padding: 10px;
-      border-radius: 8px;
-      box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
-    }
-
-    .link-item:hover {
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
-    }
-
-    .join-squad {
-      background-color: #333;
-      color: white;
+    .button {
       padding: 10px 20px;
+      background-color: #FFD700;
+      border: none;
       border-radius: 5px;
-      cursor: pointer;
-      display: inline-block;
-      text-align: center;
-      text-decoration: none;
-      margin: 20px auto;
       font-size: 1.2em;
+      cursor: pointer;
+      margin: 10px;
     }
 
-    .join-squad:hover {
-      background-color: #555;
+    .button:hover {
+      background-color: #FFA500;
     }
 
-    .loading-bar-container {
-      position: relative;
-      width: 100%;
-      height: 30px;
-      background: rgba(0, 0, 0, 0.6);
-      border-radius: 15px;
-      margin: 20px auto;
-      overflow: hidden;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-    }
-
-    .loading-bar {
-      position: absolute;
-      width: 0;
-      height: 100%;
-      background: linear-gradient(90deg, gold, #FFD700, orange);
-      border-radius: 15px;
-      box-shadow: 0 0 10px rgba(255, 255, 0, 0.8);
-      transition: width 0.5s ease;
-    }
-
-    .coin-add, .energy-subtract {
-      position: absolute;
+    .coin-value, .task-count, .leaderboard {
       font-size: 1.5em;
-      opacity: 0;
-      animation: fadeAndFloat 1s forwards;
-      pointer-events: none;
     }
 
-    .coin-add.multiple, .energy-subtract.multiple {
-      position: absolute;
-      left: 50%;
-      transform: translateX(-50%);
-      animation: fadeAndFloatMultiple 1s forwards;
+    .task-list {
+      text-align: left;
+      margin-top: 20px;
     }
 
-    .coin-add {
-      top: 20%;
-      left: 50%;
-      transform: translateX(-50%);
-      color: white;
+    .task-list li {
+      list-style: none;
+      margin-bottom: 10px;
+      background: rgba(255, 255, 255, 0.2);
+      padding: 10px;
+      border-radius: 5px;
     }
 
-    .energy-subtract {
-      top: 80%;
-      left: 50%;
-      transform: translateX(-50%);
-      color: white;
-    }
-
-    @keyframes fadeAndFloat {
-      0% {
-        transform: translate(-50%, 0);
-        opacity: 1;
-      }
-      100% {
-        transform: translate(-50%, -40px);
-        opacity: 0;
-      }
-    }
-
-    @keyframes fadeAndFloatMultiple {
-      0% {
-        transform: translate(-50%, 0);
-        opacity: 1;
-      }
-      100% {
-        transform: translate(-50%, -100px);
-        opacity: 0;
-      }
-    }
-
-    .stars {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      top: 0;
-      left: 0;
-      z-index: 1;
-      overflow: hidden;
-    }
-
-    .stars span {
-      position: absolute;
-      display: block;
-      width: 2px;
-      height: 2px;
-      background: white;
-      box-shadow: 0 0 5px white;
-      animation: moveStars 5s linear infinite;
-    }
-
-    @keyframes moveStars {
-      0% {
-        transform: translateY(0);
-        opacity: 1;
-      }
-      100% {
-        transform: translateY(100vh);
-        opacity: 0;
-      }
-    }
-
-    .milestone-emoji {
-      font-size: 2em;
-      margin-top: 10px;
-    }
-
-    /* Boost Glow Effect */
-    .boost-glow {
-      box-shadow: 0 0 20px 10px yellow;
-      transition: box-shadow 0.3s ease-in-out;
-    }
-
-    /* Coin burst effect */
-    .burst {
-      position: absolute;
-      width: 300px;
-      height: 300px;
-      background: radial-gradient(circle, rgba(255,215,0,1) 0%, rgba(255,165,0,1) 50%, rgba(255,0,0,0) 100%);
-      border-radius: 50%;
-      z-index: -1;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      opacity: 0;
-      animation: burstAnim 1s forwards;
-    }
-
-    @keyframes burstAnim {
-      0% {
-        opacity: 1;
-        transform: translate(-50%, -50%) scale(0);
-      }
-      100% {
-        opacity: 0;
-        transform: translate(-50%, -50%) scale(1);
-      }
+    .leaderboard {
+      margin-top: 40px;
     }
 
   </style>
 </head>
 <body>
 
-  <div class="stars" id="starBackground"></div>
-
   <div class="container">
-    <a href="https://t.me/YD_LOOTERS" class="join-squad">Join Squad</a> <!-- Moved Join Squad to the top -->
-
+    <h1>X Empire Game</h1>
+    
+    <!-- Coin Section -->
     <div class="coin-section">
-      <div class="coin" id="coin" onclick="handleTap()"></div>
-      <div id="coinAddText" class="coin-add">+12</div>
-      <div id="energySubtractText" class="energy-subtract">-3</div>
-      <div class="gold-text"><span id="coinValue">0</span> 🏆 Gold</div>
-      <div id="milestoneEmoji" class="milestone-emoji"></div>
+      <h2>🏆 Tap for Coins</h2>
+      <button class="button" id="tapButton">Tap for Coins</button>
+      <div>Coins: <span class="coin-value" id="coinValue">0</span></div>
     </div>
 
-    <div class="stats">
-      ⚡ <span id="energyValue">6500</span> / 6500
+    <!-- Daily Task Section -->
+    <div class="task-section">
+      <h2>🎯 Daily Tasks</h2>
+      <div>Completed Tasks: <span class="task-count" id="taskCount">0</span> / 5</div>
+      <ul class="task-list" id="taskList">
+        <!-- Dynamic Task List -->
+      </ul>
     </div>
 
-    <div class="loading-bar-container">
-      <div id="loadingBar" class="loading-bar"></div>
+    <!-- Upgrade Section -->
+    <div class="upgrade-section">
+      <h2>🔧 Upgrade System</h2>
+      <button class="button" id="upgradeButton">Upgrade (Cost: 100 Coins)</button>
+      <div>Upgrade Level: <span id="upgradeLevel">1</span></div>
     </div>
 
-    <div class="links">
-      <a href="#" class="link-item" target="_blank">🧸 Frens</a>
-      <a href="#" class="link-item" target="_blank" onclick="referAndEarn()">💰 Earn</a>
-      <a id="boostBtn" href="#" class="link-item" onclick="applyBoost()">🚀 Boost</a>
+    <!-- Leaderboard Section -->
+    <div class="leaderboard">
+      <h2>🏅 Leaderboard</h2>
+      <div id="leaderboardList">1. Player 1 - 1000 Coins</div>
     </div>
+
   </div>
 
-  <div id="coinBurst" class="burst"></div> <!-- Added Coin Burst effect -->
-
   <script>
-    let coinValue = 0;  // Reset to zero
-    let energyValue = 6500; // Set energy to 6500
-    const energyLimit = 6500;
-    let currentProgress = 0;
-    let boostActive = false;
-    let milestoneReached = false;
-    let milestones = [500, 5000, 500000, 1000000000]; // Milestones for Bronze, Silver, Gold, and Diamond
-    let currentMilestoneIndex = 0;
+    let coinCount = 0;
+    let taskCount = 0;
+    let upgradeLevel = 1;
+    const taskList = [
+      "Collect 50 coins",
+      "Complete 5 taps",
+      "Refer a friend",
+      "Claim 1 upgrade",
+      "Log in for 3 days",
+    ];
 
-    document.getElementById('coinValue').textContent = coinValue;
-    document.getElementById('energyValue').textContent = energyValue;
+    document.getElementById('tapButton').addEventListener('click', function() {
+      coinCount += upgradeLevel * 10; // Add coins based on upgrade level
+      document.getElementById('coinValue').textContent = coinCount;
 
-    // Milestone emojis based on coin count
-    function updateMilestoneEmoji(coinValue) {
-      const milestoneEmoji = document.getElementById('milestoneEmoji');
-      const currentMilestone = milestones[currentMilestoneIndex];
-
-      if (coinValue >= currentMilestone) {
-        milestoneEmoji.textContent = ['🥉', '🥈', '🥇', '💎'][currentMilestoneIndex] || '🏅';
-        currentMilestoneIndex++;
-        milestoneReached = true;
-      } else {
-        milestoneEmoji.textContent = ''; // Clear milestone emoji
+      // Automatically complete tasks based on coins collected
+      if (coinCount >= 50 && taskCount === 0) {
+        completeTask(0);
       }
-    }
+    });
 
-    function handleTap() {
-      // Update coin value based on boost status
-      const addAmount = boostActive ? 10 : 1;
-      coinValue += addAmount;
+    document.getElementById('upgradeButton').addEventListener('click', function() {
+      if (coinCount >= 100) {
+        coinCount -= 100; // Deduct coins
+        upgradeLevel += 1; // Upgrade level up
+        document.getElementById('upgradeLevel').textContent = upgradeLevel;
+        document.getElementById('coinValue').textContent = coinCount;
 
-      // Energy subtract per tap
-      energyValue -= 2;
-
-      document.getElementById('coinValue').textContent = coinValue;
-      document.getElementById('energyValue').textContent = Math.max(0, energyValue);
-
-      if (energyValue < 1) {
-        alert("Energy khatam! 🚫");
-        return;
+        // Complete upgrade-related tasks
+        if (taskCount === 3) {
+          completeTask(3);
+        }
       }
+    });
 
-      // Update milestone emoji based on coin value
-      updateMilestoneEmoji(coinValue);
+    function completeTask(taskIndex) {
+      taskCount += 1;
+      document.getElementById('taskCount').textContent = taskCount;
 
-      // Progress loading bar update
-      currentProgress = (energyValue / energyLimit) * 100;
-      document.getElementById('loadingBar').style.width = `${currentProgress}%`;
-
-      // Coin add effect
-      const coinAddText = document.getElementById('coinAddText');
-      coinAddText.style.opacity = '1';
-      coinAddText.style.top = '50%';
-      setTimeout(() => {
-        coinAddText.style.opacity = '0';
-        coinAddText.style.top = '40%';
-      }, 1000);
-
-      // Coin burst animation
-      const coinBurst = document.getElementById('coinBurst');
-      coinBurst.style.opacity = '1';
-      setTimeout(() => {
-        coinBurst.style.opacity = '0';
-      }, 1000);
+      const taskListElement = document.getElementById('taskList');
+      const taskItem = document.createElement('li');
+      taskItem.textContent = taskList[taskIndex] + " - Completed";
+      taskListElement.appendChild(taskItem);
     }
 
-    function applyBoost() {
-      boostActive = true;
-      document.getElementById('boostBtn').classList.add('boost-glow');
-      setTimeout(() => {
-        boostActive = false;
-        document.getElementById('boostBtn').classList.remove('boost-glow');
-      }, 5000);
+    // Dynamic tasks generated on load
+    function generateTasks() {
+      const taskListElement = document.getElementById('taskList');
+      taskList.forEach((task, index) => {
+        const taskItem = document.createElement('li');
+        taskItem.textContent = task;
+        taskListElement.appendChild(taskItem);
+      });
     }
 
-    function referAndEarn() {
-      // Open share window
-      const shareData = {
-        title: 'Coin Tap Game',
-        text: 'Play this awesome Coin Tap game! Earn rewards and get on the leaderboard!',
-        url: window.location.href
-      };
-      navigator.share(shareData).then(() => {
-        console.log('Referral link shared successfully!');
-      }).catch(console.error);
-    }
-
-    // Generate star background
-    function createStars() {
-      const starCount = 200;
-      const starContainer = document.getElementById('starBackground');
-      for (let i = 0; i < starCount; i++) {
-        const star = document.createElement('span');
-        const randomLeft = Math.random() * 100;
-        const randomDelay = Math.random() * 5;
-        const randomSpeed = Math.random() * 5 + 5;
-
-        star.style.left = `${randomLeft}%`;
-        star.style.animationDelay = `${randomDelay}s`;
-        star.style.animationDuration = `${randomSpeed}s`;
-        starContainer.appendChild(star);
-      }
-    }
-
-    createStars(); // Call star creation on page load
+    generateTasks(); // Generate tasks when the game loads
   </script>
+
 </body>
 </html>
