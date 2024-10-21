@@ -202,4 +202,175 @@
     /* Boost Glow Effect */
     .boost-glow {
       box-shadow: 0 0 20px 10px yellow;
- 
+      transition: box-shadow 0.3s ease-in-out;
+    }
+
+    /* Coin burst effect */
+    .burst {
+      position: absolute;
+      width: 300px;
+      height: 300px;
+      background: radial-gradient(circle, rgba(255,215,0,1) 0%, rgba(255,165,0,1) 50%, rgba(255,0,0,0) 100%);
+      border-radius: 50%;
+      z-index: -1;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      opacity: 0;
+      animation: burstAnim 1s forwards;
+    }
+
+    @keyframes burstAnim {
+      0% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(0);
+      }
+      100% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(1);
+      }
+    }
+
+  </style>
+</head>
+<body>
+
+  <div class="stars" id="starBackground"></div>
+
+  <div class="container">
+    <a href="https://t.me/YD_LOOTERS" class="join-squad">Join Squad</a> <!-- Moved Join Squad to the top -->
+
+    <div class="coin-section">
+      <div class="coin" id="coin" onclick="handleTap()"></div>
+      <div id="coinAddText" class="coin-add">+12</div>
+      <div id="energySubtractText" class="energy-subtract">-3</div>
+      <div class="gold-text"><span id="coinValue">0</span> 🏆 Gold</div>
+      <div id="milestoneEmoji" class="milestone-emoji"></div>
+    </div>
+
+    <div class="stats">
+      ⚡ <span id="energyValue">6500</span> / 6500
+    </div>
+
+    <div class="loading-bar-container">
+      <div id="loadingBar" class="loading-bar"></div>
+    </div>
+
+    <div class="links">
+      <a href="#" class="link-item" target="_blank">🧸 Frens</a>
+      <a href="#" class="link-item" target="_blank" onclick="referAndEarn()">💰 Earn</a>
+      <a id="boostBtn" href="#" class="link-item" onclick="applyBoost()">🚀 Boost</a>
+    </div>
+  </div>
+
+  <div id="coinBurst" class="burst"></div> <!-- Added Coin Burst effect -->
+
+  <script>
+    let coinValue = 0;  // Reset to zero
+    let energyValue = 6500; // Set energy to 6500
+    const energyLimit = 6500;
+    let currentProgress = 0;
+    let boostActive = false;
+    let milestoneReached = false;
+    let milestones = [500, 5000, 500000, 1000000000]; // Milestones for Bronze, Silver, Gold, and Diamond
+    let currentMilestoneIndex = 0;
+
+    document.getElementById('coinValue').textContent = coinValue;
+    document.getElementById('energyValue').textContent = energyValue;
+
+    // Milestone emojis based on coin count
+    function updateMilestoneEmoji(coinValue) {
+      const milestoneEmoji = document.getElementById('milestoneEmoji');
+      const currentMilestone = milestones[currentMilestoneIndex];
+
+      if (coinValue >= currentMilestone) {
+        milestoneEmoji.textContent = ['🥉', '🥈', '🥇', '💎'][currentMilestoneIndex] || '🏅';
+        currentMilestoneIndex++;
+        milestoneReached = true;
+      } else {
+        milestoneEmoji.textContent = ''; // Clear milestone emoji
+      }
+    }
+
+    function handleTap() {
+      // Update coin value based on boost status
+      const addAmount = boostActive ? 10 : 1;
+      coinValue += addAmount;
+
+      // Energy subtract per tap
+      energyValue -= 2;
+
+      document.getElementById('coinValue').textContent = coinValue;
+      document.getElementById('energyValue').textContent = Math.max(0, energyValue);
+
+      if (energyValue < 1) {
+        alert("Energy khatam! 🚫");
+        return;
+      }
+
+      // Update milestone emoji based on coin value
+      updateMilestoneEmoji(coinValue);
+
+      // Progress loading bar update
+      currentProgress = (energyValue / energyLimit) * 100;
+      document.getElementById('loadingBar').style.width = `${currentProgress}%`;
+
+      // Coin add effect
+      const coinAddText = document.getElementById('coinAddText');
+      coinAddText.style.opacity = '1';
+      coinAddText.style.top = '50%';
+      setTimeout(() => {
+        coinAddText.style.opacity = '0';
+        coinAddText.style.top = '40%';
+      }, 1000);
+
+      // Coin burst animation
+      const coinBurst = document.getElementById('coinBurst');
+      coinBurst.style.opacity = '1';
+      setTimeout(() => {
+        coinBurst.style.opacity = '0';
+      }, 1000);
+    }
+
+    function applyBoost() {
+      boostActive = true;
+      document.getElementById('boostBtn').classList.add('boost-glow');
+      setTimeout(() => {
+        boostActive = false;
+        document.getElementById('boostBtn').classList.remove('boost-glow');
+      }, 5000);
+    }
+
+    function referAndEarn() {
+      // Open share window
+      const shareData = {
+        title: 'Coin Tap Game',
+        text: 'Play this awesome Coin Tap game! Earn rewards and get on the leaderboard!',
+        url: window.location.href
+      };
+      navigator.share(shareData).then(() => {
+        console.log('Referral link shared successfully!');
+      }).catch(console.error);
+    }
+
+    // Generate star background
+    function createStars() {
+      const starCount = 200;
+      const starContainer = document.getElementById('starBackground');
+      for (let i = 0; i < starCount; i++) {
+        const star = document.createElement('span');
+        const randomLeft = Math.random() * 100;
+        const randomDelay = Math.random() * 5;
+        const randomSpeed = Math.random() * 5 + 5;
+
+        star.style.left = `${randomLeft}%`;
+        star.style.animationDelay = `${randomDelay}s`;
+        star.style.animationDuration = `${randomSpeed}s`;
+        starContainer.appendChild(star);
+      }
+    }
+
+    createStars(); // Call star creation on page load
+  </script>
+</body>
+</html>
