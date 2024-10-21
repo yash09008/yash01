@@ -3,20 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>X Empire Advanced Clone</title>
+    <title>X Empire Ultimate Edition</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Segoe UI', sans-serif;
             text-align: center;
-            background-color: #f0f0f0;
+            background-color: #2e2e2e;
+            color: #fff;
         }
         #coin-counter {
-            font-size: 2em;
+            font-size: 2.5em;
             margin-top: 20px;
+            color: #ffdd57;
         }
         #elon-img {
             cursor: pointer;
-            width: 150px;
+            width: 250px;
+            margin-top: 20px;
+            transition: transform 0.2s;
+        }
+        #elon-img:hover {
+            transform: scale(1.1);
         }
         .menu {
             display: flex;
@@ -24,26 +31,36 @@
             margin-top: 20px;
         }
         .menu button {
-            padding: 10px 20px;
-            font-size: 1em;
+            padding: 12px 25px;
+            font-size: 1.2em;
+            border-radius: 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
         }
-        .upgrade-section, .daily-task, .referral-section {
+        .menu button:hover {
+            background-color: #0056b3;
+        }
+        .upgrade-section, .daily-task, .referral-section, .leaderboard-section {
             margin-top: 30px;
+            display: none;
         }
         .task-list {
             list-style: none;
             padding: 0;
         }
         .task-list li {
-            background-color: #eee;
-            padding: 10px;
+            background-color: #444;
+            padding: 15px;
             margin: 5px 0;
+            border-radius: 8px;
         }
     </style>
 </head>
 <body>
 
-    <h1>Welcome to X Empire Clone</h1>
+    <h1>Welcome to the Ultimate X Empire</h1>
     <div id="coin-counter">Coins: 0</div>
 
     <img id="elon-img" src="elon-level1.png" alt="Elon Musk" onclick="earnCoins()">
@@ -52,31 +69,44 @@
         <button onclick="openUpgrade()">Upgrades</button>
         <button onclick="openTasks()">Tasks</button>
         <button onclick="openReferral()">Referral</button>
+        <button onclick="openLeaderboard()">Leaderboard</button>
     </div>
 
     <div id="main-content">
         <!-- Upgrades -->
-        <div class="upgrade-section" style="display: none;" id="upgrade-section">
+        <div class="upgrade-section" id="upgrade-section">
             <h2>Upgrades</h2>
             <p>Coins per tap: <span id="coins-per-tap">1</span></p>
             <button onclick="upgrade()">Upgrade (Cost: <span id="upgrade-cost">100</span> coins)</button>
         </div>
 
         <!-- Daily Tasks -->
-        <div class="daily-task" style="display: none;" id="daily-task">
+        <div class="daily-task" id="daily-task">
             <h2>Daily Tasks</h2>
-            <ul class="task-list" id="task-list">
+            <ul class="task-list">
                 <li>Join 5 Telegram Channels</li>
-                <li>Refer 1 Friend</li>
-                <li>Tap 100 times to earn coins</li>
+                <li>Refer 2 Friends</li>
+                <li>Tap 500 times to unlock Frenzy Mode</li>
             </ul>
         </div>
 
         <!-- Referral Section -->
-        <div class="referral-section" style="display: none;" id="referral-section">
-            <h2>Referral</h2>
-            <p>Share this referral link to earn bonus coins:</p>
+        <div class="referral-section" id="referral-section">
+            <h2>Referral Program</h2>
+            <p>Invite friends to earn bonus coins and unlock exclusive items!</p>
             <input type="text" value="https://xempire.com/ref/yourcode" readonly>
+            <p>Invite 10 friends to unlock **Futuristic Elon**!</p>
+        </div>
+
+        <!-- Leaderboard -->
+        <div class="leaderboard-section" id="leaderboard-section">
+            <h2>Leaderboard</h2>
+            <p>Top Players this week:</p>
+            <ul class="task-list">
+                <li>Player1 - 2B coins</li>
+                <li>Player2 - 1.9B coins</li>
+                <li>Player3 - 1.8B coins</li>
+            </ul>
         </div>
     </div>
 
@@ -85,54 +115,44 @@
         let coinsPerTap = 1;
         let upgradeCost = 100;
         let level = 1;
+        let frenzyMode = false;
 
         // Coin earning function
         function earnCoins() {
             coins += coinsPerTap;
             document.getElementById('coin-counter').innerText = `Coins: ${coins}`;
+
+            if (coins >= 500 && !frenzyMode) {
+                // Trigger Frenzy Mode
+                frenzyMode = true;
+                alert("Frenzy Mode Unlocked! Earn 3x coins for the next minute.");
+                coinsPerTap *= 3;  // Triples the coin per tap
+                setTimeout(() => {
+                    frenzyMode = false;
+                    coinsPerTap /= 3;  // Revert back
+                }, 60000);
+            }
         }
 
         // Upgrade Elon Musk and increase coin production
         function upgrade() {
             if (coins >= upgradeCost) {
                 coins -= upgradeCost;
-                coinsPerTap *= 2;  // Double the coin per tap value
-                upgradeCost *= 2;  // Double the cost for the next upgrade
-                level++;  // Increment level
+                coinsPerTap *= 2;
+                upgradeCost *= 2;
+                level++;
 
-                // Update UI
                 document.getElementById('coin-counter').innerText = `Coins: ${coins}`;
                 document.getElementById('coins-per-tap').innerText = coinsPerTap;
                 document.getElementById('upgrade-cost').innerText = upgradeCost;
 
-                // Update Elon image based on level
                 document.getElementById('elon-img').src = `elon-level${level}.png`;
             } else {
                 alert("Not enough coins!");
             }
         }
 
-        // Show upgrade section
         function openUpgrade() {
             document.getElementById('upgrade-section').style.display = 'block';
             document.getElementById('daily-task').style.display = 'none';
-            document.getElementById('referral-section').style.display = 'none';
-        }
-
-        // Show daily task section
-        function openTasks() {
-            document.getElementById('upgrade-section').style.display = 'none';
-            document.getElementById('daily-task').style.display = 'block';
-            document.getElementById('referral-section').style.display = 'none';
-        }
-
-        // Show referral section
-        function openReferral() {
-            document.getElementById('upgrade-section').style.display = 'none';
-            document.getElementById('daily-task').style.display = 'none';
-            document.getElementById('referral-section').style.display = 'block';
-        }
-    </script>
-
-</body>
-</html>
+            document.getElementById('referral-section').style.display =
