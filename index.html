@@ -1,164 +1,107 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>X Empire Clone</title>
-  <style>
-    body {
-      background: #333;
-      color: white;
-      font-family: Arial, sans-serif;
-      text-align: center;
-      margin: 0;
-      padding: 0;
-      overflow: hidden;
-    }
-
-    .container {
-      padding: 20px;
-      margin: 50px auto;
-      max-width: 600px;
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: 10px;
-      box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
-    }
-
-    .coin-section, .task-section, .upgrade-section {
-      margin-bottom: 30px;
-    }
-
-    .button {
-      padding: 10px 20px;
-      background-color: #FFD700;
-      border: none;
-      border-radius: 5px;
-      font-size: 1.2em;
-      cursor: pointer;
-      margin: 10px;
-    }
-
-    .button:hover {
-      background-color: #FFA500;
-    }
-
-    .coin-value, .task-count, .leaderboard {
-      font-size: 1.5em;
-    }
-
-    .task-list {
-      text-align: left;
-      margin-top: 20px;
-    }
-
-    .task-list li {
-      list-style: none;
-      margin-bottom: 10px;
-      background: rgba(255, 255, 255, 0.2);
-      padding: 10px;
-      border-radius: 5px;
-    }
-
-    .leaderboard {
-      margin-top: 40px;
-    }
-
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elon Musk Coin Tap Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
+        #coin-count {
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+        #elon-img {
+            cursor: pointer;
+            transition: all 0.5s;
+        }
+        #menu {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-around;
+            background-color: #333;
+            padding: 10px;
+        }
+        #menu button {
+            padding: 10px;
+            color: white;
+            background-color: #444;
+            border: none;
+            cursor: pointer;
+        }
+        #menu button:hover {
+            background-color: #555;
+        }
+    </style>
 </head>
 <body>
-
-  <div class="container">
-    <h1>X Empire Game</h1>
+    <div id="coin-count">Coins: 0</div>
+    <img id="elon-img" src="level1.png" alt="Elon Musk" width="200">
     
-    <!-- Coin Section -->
-    <div class="coin-section">
-      <h2>🏆 Tap for Coins</h2>
-      <button class="button" id="tapButton">Tap for Coins</button>
-      <div>Coins: <span class="coin-value" id="coinValue">0</span></div>
+    <div id="menu">
+        <button onclick="showTasks()">Tasks</button>
+        <button onclick="referAndEarn()">Refer and Earn</button>
+        <button onclick="dailyQuest()">Daily Quest</button>
     </div>
 
-    <!-- Daily Task Section -->
-    <div class="task-section">
-      <h2>🎯 Daily Tasks</h2>
-      <div>Completed Tasks: <span class="task-count" id="taskCount">0</span> / 5</div>
-      <ul class="task-list" id="taskList">
-        <!-- Dynamic Task List -->
-      </ul>
-    </div>
+    <script>
+        let coins = 0;
+        let level = 1;
 
-    <!-- Upgrade Section -->
-    <div class="upgrade-section">
-      <h2>🔧 Upgrade System</h2>
-      <button class="button" id="upgradeButton">Upgrade (Cost: 100 Coins)</button>
-      <div>Upgrade Level: <span id="upgradeLevel">1</span></div>
-    </div>
+        const elonImg = document.getElementById('elon-img');
+        const coinCount = document.getElementById('coin-count');
 
-    <!-- Leaderboard Section -->
-    <div class="leaderboard">
-      <h2>🏅 Leaderboard</h2>
-      <div id="leaderboardList">1. Player 1 - 1000 Coins</div>
-    </div>
+        const backgrounds = [
+            'level1-bg.jpg', // For level 1
+            'level2-bg.jpg', // For level 2
+            // Add more backgrounds for up to 12 levels
+        ];
 
-  </div>
+        const elonImages = [
+            'level1.png', // Poor Elon
+            'level2.png', // Richer Elon
+            // Add more images for each level
+        ];
 
-  <script>
-    let coinCount = 0;
-    let taskCount = 0;
-    let upgradeLevel = 1;
-    const taskList = [
-      "Collect 50 coins",
-      "Complete 5 taps",
-      "Refer a friend",
-      "Claim 1 upgrade",
-      "Log in for 3 days",
-    ];
+        // Function to handle coin tapping
+        elonImg.addEventListener('click', () => {
+            coins += level; // Coins increase as per the level
+            coinCount.innerText = `Coins: ${coins}`;
 
-    document.getElementById('tapButton').addEventListener('click', function() {
-      coinCount += upgradeLevel * 10; // Add coins based on upgrade level
-      document.getElementById('coinValue').textContent = coinCount;
+            // Upgrade Elon Musk's appearance every 100 coins (or change condition as needed)
+            if (coins >= level * 100 && level < 12) {
+                level++;
+                elonImg.src = elonImages[level - 1];
+                document.body.style.backgroundImage = `url(${backgrounds[level - 1]})`;
+            }
+        });
 
-      // Automatically complete tasks based on coins collected
-      if (coinCount >= 50 && taskCount === 0) {
-        completeTask(0);
-      }
-    });
-
-    document.getElementById('upgradeButton').addEventListener('click', function() {
-      if (coinCount >= 100) {
-        coinCount -= 100; // Deduct coins
-        upgradeLevel += 1; // Upgrade level up
-        document.getElementById('upgradeLevel').textContent = upgradeLevel;
-        document.getElementById('coinValue').textContent = coinCount;
-
-        // Complete upgrade-related tasks
-        if (taskCount === 3) {
-          completeTask(3);
+        // Function to show tasks
+        function showTasks() {
+            alert('Task 1: Join 5 Telegram channels.\nTask 2: Refer friends.');
         }
-      }
-    });
 
-    function completeTask(taskIndex) {
-      taskCount += 1;
-      document.getElementById('taskCount').textContent = taskCount;
+        // Function for refer and earn
+        function referAndEarn() {
+            alert('Share your referral link: https://yourgame.com/referral/yourid');
+        }
 
-      const taskListElement = document.getElementById('taskList');
-      const taskItem = document.createElement('li');
-      taskItem.textContent = taskList[taskIndex] + " - Completed";
-      taskListElement.appendChild(taskItem);
-    }
-
-    // Dynamic tasks generated on load
-    function generateTasks() {
-      const taskListElement = document.getElementById('taskList');
-      taskList.forEach((task, index) => {
-        const taskItem = document.createElement('li');
-        taskItem.textContent = task;
-        taskListElement.appendChild(taskItem);
-      });
-    }
-
-    generateTasks(); // Generate tasks when the game loads
-  </script>
-
+        // Function for daily quest
+        function dailyQuest() {
+            alert('Complete the daily quest to earn extra rewards!');
+        }
+    </script>
 </body>
 </html>
