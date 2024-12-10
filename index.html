@@ -63,7 +63,8 @@
     <h1>Welcome to the Ultimate X Empire</h1>
     <div id="coin-counter">Coins: 0</div>
 
-    <img id="elon-img" src="elon-level1.png" alt="Elon Musk" onclick="earnCoins()">
+    <!-- Updated Elon Musk image -->
+    <img id="elon-img" src="https://t.me/yashchannelonly/4" alt="Elon Musk" onclick="earnCoins()">
 
     <div class="menu">
         <button onclick="openUpgrade()">Upgrades</button>
@@ -146,7 +147,8 @@
                 document.getElementById('coins-per-tap').innerText = coinsPerTap;
                 document.getElementById('upgrade-cost').innerText = upgradeCost;
 
-                document.getElementById('elon-img').src = `elon-level${level}.png`;
+                // Dynamically update Elon Musk's image for each level
+                document.getElementById('elon-img').src = `https://t.me/yashchannelonly/${level + 3}`;
             } else {
                 alert("Not enough coins!");
             }
@@ -155,4 +157,31 @@
         function openUpgrade() {
             document.getElementById('upgrade-section').style.display = 'block';
             document.getElementById('daily-task').style.display = 'none';
-            document.getElementById('referral-section').style.display =
+            document.getElementById('referral-section').style.display = 'none';
+            document.getElementById('leaderboard-section').style.display = 'none';
+        }
+
+        function openTasks() {
+            document.getElementById('upgrade-section').style.display = 'none';
+            document.getElementById('daily-task').style.display = 'block';
+            document.getElementById('referral-section').style.display = 'none';
+            document.getElementById('leaderboard-section').style.display = 'none';
+        }
+
+        function openReferral() {
+            document.getElementById('upgrade-section').style.display = 'none';
+            document.getElementById('daily-task').style.display = 'none';
+            document.getElementById('referral-section').style.display = 'block';
+            document.getElementById('leaderboard-section').style.display = 'none';
+        }
+
+        function openLeaderboard() {
+            document.getElementById('upgrade-section').style.display = 'none';
+            document.getElementById('daily-task').style.display = 'none';
+            document.getElementById('referral-section').style.display = 'none';
+            document.getElementById('leaderboard-section').style.display = 'block';
+        }
+    </script>
+
+</body>
+</html>
