@@ -1,115 +1,23 @@
-
-        .pointer {
-            width: 0;
-            height: 0;
-            border<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Spin and Win</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            background: linear-gradient(135deg, #ff9a9e, #fad0c4);
-            color: #333;
-            margin: 0;
-            padding: 0;
-        }
-        .container {
-            margin-top: 50px;
-        }
-        .wheel {
-            margin: 20px auto;
-            width: 300px;
-            height: 300px;
-            border: 10px solid #fff;
-            border-radius: 50%;
-            background: conic-gradient(#ffecb3, #ffe0b2, #ffcdd2, #e1bee7, #d1c4e9);
-            position: relative;
-        }-left: 20px solid transparent;
-            border-right: 20px solid transparent;
-            border-bottom: 40px solid #333;
-            position: absolute;
-            top: -40px;
-            left: calc(50% - 20px);
-        }
-        .button {
-            background-color: #4CAF50;
-            color: white;
-            padding: 15px 30px;
-            font-size: 18px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            margin-top: 20px;
-        }
-        .button:hover {
-            background-color: #45a049;
-        }
-        .prize {
-            margin-top: 20px;
-            font-size: 24px;
-            font-weight: bold;
-        }
-        .telegram {
-            margin-top: 20px;
-        }
-        .telegram a {
-            text-decoration: none;
-            color: white;
-            background-color: #0088cc;
-            padding: 10px 20px;
-            border-radius: 5px;
-            font-size: 18px;
-        }
-        .telegram a:hover {
-            background-color: #006699;
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        <h1>Spin and Win!</h1>
-        <p>Spin the wheel and win exciting prizes! Join our Telegram channel to claim your reward.</p>
-
-        <div class="wheel">
-            <div class="pointer"></div>
-        </div>
-
-        <button class="button" onclick="spinWheel()">Spin Now</button>
-
-        <div class="prize" id="prize">Your prize will appear here!</div>
-
-        <div class="telegram" id="telegram" style="display: none;">
-            <p>Join our Telegram channel to claim your prize:</p>
-            <a href="https://t.me/your_channel" target="_blank">Join Telegram</a>
-        </div>
+    <h1>🎯 Spin and Win! 🎉</h1>
+    <p>Spin the wheel and win exciting prizes! Withdraw your balance when you reach ₹50.</p>
+    <div class="wheel-container">
+        <div class="pointer"></div>
+        <div class="wheel" id="wheel"></div>
     </div>
+    <button class="button" id="spinButton">Spin Now</button>
+    <p class="result" id="result"></p>
+    <p class="balance">💰 Your Balance: ₹<span id="balance">0</span></p>
+    <button class="button" id="withdrawButton" disabled>Withdraw</button>
 
-    <script>
-        const prizes = ["50 Coins", "100 Coins", "200 Coins", "500 Coins", "Better Luck Next Time!", "1,000 Coins"];
-
-        function spinWheel() {
-            const wheel = document.querySelector('.wheel');
-            const prizeText = document.getElementById('prize');
-            const telegramDiv = document.getElementById('telegram');
-
-            // Randomly choose a prize
-            const randomPrize = prizes[Math.floor(Math.random() * prizes.length)];
-
-            // Spin animation
-            const spinDegrees = Math.floor(Math.random() * 360) + 720; // Minimum 2 full spins
-            wheel.style.transition = 'transform 3s ease-out';
-            wheel.style.transform = `rotate(${spinDegrees}deg)`;
-
-            // Reveal prize after spin
-            setTimeout(() => {
-                prizeText.innerText = `You won: ${randomPrize}`;
-                telegramDiv.style.display = 'block';
-            }, 3000);
-        }
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
