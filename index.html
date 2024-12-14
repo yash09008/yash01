@@ -3,20 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Spin and Win</title>
+    <title>Spin and Win - Advanced</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>🎯 Spin and Win! 🎉</h1>
-    <p>Spin the wheel and win exciting prizes! Withdraw your balance when you reach ₹50.</p>
-    <div class="wheel-container">
-        <div class="pointer"></div>
-        <div class="wheel" id="wheel"></div>
+    <div class="container">
+        <h1>🎯 Spin and Win! 🎉</h1>
+        <p>Spin the wheel and win exciting prizes! Join our Telegram channel to play.</p>
+
+        <!-- Telegram Join Section -->
+        <div id="join-section">
+            <p>👉 <a href="https://t.me/yourchannel" target="_blank">Join our Telegram Channel</a> to play!</p>
+        </div>
+
+        <!-- Wheel Section -->
+        <div class="wheel-container">
+            <div class="pointer"></div>
+            <canvas id="wheel" width="400" height="400"></canvas>
+        </div>
+
+        <!-- Buttons -->
+        <button id="spinButton" class="button" disabled>Spin Now</button>
+        <p id="result" class="result"></p>
+        <p class="balance">💰 Your Balance: ₹<span id="balance">0</span></p>
+        <button id="withdrawButton" class="button" disabled>Withdraw</button>
     </div>
-    <button class="button" id="spinButton">Spin Now</button>
-    <p class="result" id="result"></p>
-    <p class="balance">💰 Your Balance: ₹<span id="balance">0</span></p>
-    <button class="button" id="withdrawButton" disabled>Withdraw</button>
 
     <script src="script.js"></script>
 </body>
