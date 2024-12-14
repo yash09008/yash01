@@ -1,0 +1,62 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-color: #f7f7f7;
+    margin: 0;
+    padding: 0;
+}
+.wheel-container {
+    margin: 50px auto;
+    position: relative;
+    width: 300px;
+    height: 300px;
+}
+.wheel {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 10px solid #444;
+    background: conic-gradient(
+        #ffeb3b 0deg, #ffeb3b 45deg,
+        #03a9f4 45deg, #03a9f4 90deg,
+        #e91e63 90deg, #e91e63 135deg,
+        #4caf50 135deg, #4caf50 180deg,
+        #ff9800 180deg, #ff9800 225deg,
+        #9c27b0 225deg, #9c27b0 270deg,
+        #cccccc 270deg, #cccccc 360deg
+    );
+    animation: spin 3s cubic-bezier(0.1, 0.7, 0.1, 1) forwards;
+}
+.pointer {
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 60px;
+    background: #e91e63;
+    clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
+}
+.button {
+    margin-top: 30px;
+    padding: 10px 20px;
+    font-size: 18px;
+    background: #03a9f4;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.button:hover {
+    background: #0288d1;
+}
+.result {
+    margin-top: 20px;
+    font-size: 20px;
+    color: #333;
+}
+.balance {
+    margin-top: 20px;
+    font-size: 20px;
+    color: #4caf50;
+}
