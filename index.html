@@ -1,187 +1,115 @@
-<!DOCTYPE html>
+
+        .pointer {
+            width: 0;
+            height: 0;
+            border<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>X Empire Ultimate Edition</title>
+    <title>Spin and Win</title>
     <style>
         body {
-            font-family: 'Segoe UI', sans-serif;
+            font-family: Arial, sans-serif;
             text-align: center;
-            background-color: #2e2e2e;
-            color: #fff;
-        }
-        #coin-counter {
-            font-size: 2.5em;
-            margin-top: 20px;
-            color: #ffdd57;
-        }
-        #elon-img {
-            cursor: pointer;
-            width: 250px;
-            margin-top: 20px;
-            transition: transform 0.2s;
-        }
-        #elon-img:hover {
-            transform: scale(1.1);
-        }
-        .menu {
-            display: flex;
-            justify-content: space-around;
-            margin-top: 20px;
-        }
-        .menu button {
-            padding: 12px 25px;
-            font-size: 1.2em;
-            border-radius: 10px;
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-            cursor: pointer;
-        }
-        .menu button:hover {
-            background-color: #0056b3;
-        }
-        .upgrade-section, .daily-task, .referral-section, .leaderboard-section {
-            margin-top: 30px;
-            display: none;
-        }
-        .task-list {
-            list-style: none;
+            background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+            color: #333;
+            margin: 0;
             padding: 0;
         }
-        .task-list li {
-            background-color: #444;
-            padding: 15px;
-            margin: 5px 0;
-            border-radius: 8px;
+        .container {
+            margin-top: 50px;
+        }
+        .wheel {
+            margin: 20px auto;
+            width: 300px;
+            height: 300px;
+            border: 10px solid #fff;
+            border-radius: 50%;
+            background: conic-gradient(#ffecb3, #ffe0b2, #ffcdd2, #e1bee7, #d1c4e9);
+            position: relative;
+        }-left: 20px solid transparent;
+            border-right: 20px solid transparent;
+            border-bottom: 40px solid #333;
+            position: absolute;
+            top: -40px;
+            left: calc(50% - 20px);
+        }
+        .button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px 30px;
+            font-size: 18px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        .button:hover {
+            background-color: #45a049;
+        }
+        .prize {
+            margin-top: 20px;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .telegram {
+            margin-top: 20px;
+        }
+        .telegram a {
+            text-decoration: none;
+            color: white;
+            background-color: #0088cc;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 18px;
+        }
+        .telegram a:hover {
+            background-color: #006699;
         }
     </style>
 </head>
 <body>
+    <div class="container">
+        <h1>Spin and Win!</h1>
+        <p>Spin the wheel and win exciting prizes! Join our Telegram channel to claim your reward.</p>
 
-    <h1>Welcome to the Ultimate X Empire</h1>
-    <div id="coin-counter">Coins: 0</div>
-
-    <!-- Updated Elon Musk image -->
-    <img id="elon-img" src="https://t.me/yashchannelonly/4" alt="Elon Musk" onclick="earnCoins()">
-
-    <div class="menu">
-        <button onclick="openUpgrade()">Upgrades</button>
-        <button onclick="openTasks()">Tasks</button>
-        <button onclick="openReferral()">Referral</button>
-        <button onclick="openLeaderboard()">Leaderboard</button>
-    </div>
-
-    <div id="main-content">
-        <!-- Upgrades -->
-        <div class="upgrade-section" id="upgrade-section">
-            <h2>Upgrades</h2>
-            <p>Coins per tap: <span id="coins-per-tap">1</span></p>
-            <button onclick="upgrade()">Upgrade (Cost: <span id="upgrade-cost">100</span> coins)</button>
+        <div class="wheel">
+            <div class="pointer"></div>
         </div>
 
-        <!-- Daily Tasks -->
-        <div class="daily-task" id="daily-task">
-            <h2>Daily Tasks</h2>
-            <ul class="task-list">
-                <li>Join 5 Telegram Channels</li>
-                <li>Refer 2 Friends</li>
-                <li>Tap 500 times to unlock Frenzy Mode</li>
-            </ul>
-        </div>
+        <button class="button" onclick="spinWheel()">Spin Now</button>
 
-        <!-- Referral Section -->
-        <div class="referral-section" id="referral-section">
-            <h2>Referral Program</h2>
-            <p>Invite friends to earn bonus coins and unlock exclusive items!</p>
-            <input type="text" value="https://xempire.com/ref/yourcode" readonly>
-            <p>Invite 10 friends to unlock **Futuristic Elon**!</p>
-        </div>
+        <div class="prize" id="prize">Your prize will appear here!</div>
 
-        <!-- Leaderboard -->
-        <div class="leaderboard-section" id="leaderboard-section">
-            <h2>Leaderboard</h2>
-            <p>Top Players this week:</p>
-            <ul class="task-list">
-                <li>Player1 - 2B coins</li>
-                <li>Player2 - 1.9B coins</li>
-                <li>Player3 - 1.8B coins</li>
-            </ul>
+        <div class="telegram" id="telegram" style="display: none;">
+            <p>Join our Telegram channel to claim your prize:</p>
+            <a href="https://t.me/your_channel" target="_blank">Join Telegram</a>
         </div>
     </div>
 
     <script>
-        let coins = 0;
-        let coinsPerTap = 1;
-        let upgradeCost = 100;
-        let level = 1;
-        let frenzyMode = false;
+        const prizes = ["50 Coins", "100 Coins", "200 Coins", "500 Coins", "Better Luck Next Time!", "1,000 Coins"];
 
-        // Coin earning function
-        function earnCoins() {
-            coins += coinsPerTap;
-            document.getElementById('coin-counter').innerText = `Coins: ${coins}`;
+        function spinWheel() {
+            const wheel = document.querySelector('.wheel');
+            const prizeText = document.getElementById('prize');
+            const telegramDiv = document.getElementById('telegram');
 
-            if (coins >= 500 && !frenzyMode) {
-                // Trigger Frenzy Mode
-                frenzyMode = true;
-                alert("Frenzy Mode Unlocked! Earn 3x coins for the next minute.");
-                coinsPerTap *= 3;  // Triples the coin per tap
-                setTimeout(() => {
-                    frenzyMode = false;
-                    coinsPerTap /= 3;  // Revert back
-                }, 60000);
-            }
-        }
+            // Randomly choose a prize
+            const randomPrize = prizes[Math.floor(Math.random() * prizes.length)];
 
-        // Upgrade Elon Musk and increase coin production
-        function upgrade() {
-            if (coins >= upgradeCost) {
-                coins -= upgradeCost;
-                coinsPerTap *= 2;
-                upgradeCost *= 2;
-                level++;
+            // Spin animation
+            const spinDegrees = Math.floor(Math.random() * 360) + 720; // Minimum 2 full spins
+            wheel.style.transition = 'transform 3s ease-out';
+            wheel.style.transform = `rotate(${spinDegrees}deg)`;
 
-                document.getElementById('coin-counter').innerText = `Coins: ${coins}`;
-                document.getElementById('coins-per-tap').innerText = coinsPerTap;
-                document.getElementById('upgrade-cost').innerText = upgradeCost;
-
-                // Dynamically update Elon Musk's image for each level
-                document.getElementById('elon-img').src = `https://t.me/yashchannelonly/${level + 3}`;
-            } else {
-                alert("Not enough coins!");
-            }
-        }
-
-        function openUpgrade() {
-            document.getElementById('upgrade-section').style.display = 'block';
-            document.getElementById('daily-task').style.display = 'none';
-            document.getElementById('referral-section').style.display = 'none';
-            document.getElementById('leaderboard-section').style.display = 'none';
-        }
-
-        function openTasks() {
-            document.getElementById('upgrade-section').style.display = 'none';
-            document.getElementById('daily-task').style.display = 'block';
-            document.getElementById('referral-section').style.display = 'none';
-            document.getElementById('leaderboard-section').style.display = 'none';
-        }
-
-        function openReferral() {
-            document.getElementById('upgrade-section').style.display = 'none';
-            document.getElementById('daily-task').style.display = 'none';
-            document.getElementById('referral-section').style.display = 'block';
-            document.getElementById('leaderboard-section').style.display = 'none';
-        }
-
-        function openLeaderboard() {
-            document.getElementById('upgrade-section').style.display = 'none';
-            document.getElementById('daily-task').style.display = 'none';
-            document.getElementById('referral-section').style.display = 'none';
-            document.getElementById('leaderboard-section').style.display = 'block';
+            // Reveal prize after spin
+            setTimeout(() => {
+                prizeText.innerText = `You won: ${randomPrize}`;
+                telegramDiv.style.display = 'block';
+            }, 3000);
         }
     </script>
-
 </body>
 </html>
