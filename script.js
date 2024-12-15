@@ -1,65 +1,59 @@
-const prizes = ["₹10", "₹50", "₹100", "₹0", "Better Luck Next Time", "Better Luck Next Time", "Better Luck Next Time"];
-const spinButton = document.getElementById('spinButton');
-const withdrawButton = document.getElementById('withdrawButton');
-const result = document.getElementById('result');
-const balanceDisplay = document.getElementById('balance');
-const joinSection = document.getElementById('join-section');
+const wheelCanvas = document.getElementById('wheel');
+const spinButton = document.getElementById('spin-btn');
+const resultText = document.getElementById('result-text');
+const ctx = wheelCanvas.getContext('2d');
 
-let balance = parseInt(localStorage.getItem('balance')) || 0;
-let firstSpin = localStorage.getItem('firstSpin') || false;
-let joinedTelegram = false; // Update this after Telegram integration
+const prizes = ["Bad Luck", "₹10", "Spin Again", "₹30", "Bad Luck", "₹50"];
+const colors = ["#FFDDC1", "#FFABAB", "#FFC3A0", "#D5AAFF", "#85E3FF", "#B9FBC0"];
+let startAngle = 0;
+const arc = Math.PI / (prizes.length / 2);
+let spinTimeout = null;
 
-balanceDisplay.textContent = balance;
+// Draw Wheel
+function drawWheel() {
+    for (let i = 0; i < prizes.length; i++) {
+        const angle = startAngle + i * arc;
+        ctx.beginPath();
+        ctx.arc(200, 200, 200, angle, angle + arc, false);
+        ctx.lineTo(200, 200);
+        ctx.fillStyle = colors[i];
+        ctx.fill();
+        ctx.save();
+        ctx.fillStyle = "#333";
+        ctx.translate(200 + Math.cos(angle + arc / 2) * 150, 200 + Math.sin(angle + arc / 2) * 150);
+        ctx.rotate(angle + arc / 2 + Math.PI / 2);
+        ctx.fillText(prizes[i], -ctx.measureText(prizes[i]).width / 2, 0);
+        ctx.restore();
+    }
+}
 
-// Check Telegram Join Status
-function checkTelegramJoin() {
-    // Replace this with actual Telegram join verification logic
-    setTimeout(() => {
-        joinedTelegram = true; // Simulate Telegram join
-        if (joinedTelegram) {
-            joinSection.style.display = 'none';
-            spinButton.disabled = false;
+// Spin Wheel
+function spinWheel() {
+    const spins = Math.floor(Math.random() * 10) + 10;
+    let spinAngle = 0;
+    let currentSpin = 0;
+
+    function rotateWheel() {
+        spinAngle += Math.PI / 12;
+        startAngle += spinAngle / 100;
+        drawWheel();
+        currentSpin++;
+
+        if (currentSpin < spins) {
+            spinTimeout = requestAnimationFrame(rotateWheel);
+        } else {
+            const prizeIndex = Math.floor(((startAngle % (2 * Math.PI)) / arc) + prizes.length) % prizes.length;
+            resultText.textContent = `🎉 You won: ${prizes[prizeIndex]} 🎉`;
         }
-    }, 1000);
+    }
+    rotateWheel();
 }
 
-// Spin Logic
 spinButton.addEventListener('click', () => {
-    if (!firstSpin) {
-        firstSpin = true;
-        localStorage.setItem('firstSpin', true);
-        balance += 10;
-        updateBalance();
-        result.textContent = "You won ₹10 on your first spin!";
-        return;
-    }
-
-    const randomPrize = prizes[Math.floor(Math.random() * prizes.length)];
-    if (randomPrize.startsWith("₹")) {
-        balance += parseInt(randomPrize.slice(1));
-        updateBalance();
-    }
-    result.textContent = `You won: ${randomPrize}`;
+    resultText.textContent = "Spinning...";
+    cancelAnimationFrame(spinTimeout);
+    spinWheel();
 });
 
-// Withdraw Logic
-withdrawButton.addEventListener('click', () => {
-    if (balance >= 50) {
-        alert(`Withdrawal Successful! ₹${balance} has been sent to your account.`);
-        balance = 0;
-        updateBalance();
-    } else {
-        alert("Minimum ₹50 required to withdraw.");
-    }
-});
-
-// Update Balance
-function updateBalance() {
-    balanceDisplay.textContent = balance;
-    localStorage.setItem('balance', balance);
-    withdrawButton.disabled = balance < 50;
-}
-
-// Initialize
-checkTelegramJoin();
-updateBalance();
+// Initialize Wheel
+drawWheel();
