@@ -3,39 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Spin and Win</title>
-    <link rel="stylesheet" href="styles/style.css">
+    <title>Spin and Win Game</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    
-    <!-- Main Spin Section -->
-    <div id="game-container" style="display:none;">
-        <h1>Spin & Win</h1>
-        <div id="wheel-container">
-            <img src="assets/wheel.png" alt="Spin Wheel" id="wheel">
-            <button id="spin-btn">Spin</button>
+    <div class="container">
+        <h1>🎉 Spin & Win Game 🎉</h1>
+        <div class="wheel-container">
+            <canvas id="wheel" width="400" height="400"></canvas>
+            <button id="spin-btn">Spin Now</button>
         </div>
-        <div id="result"></div>
-
-        <!-- Task Section -->
-<div id="task-section">
-    <h3>Complete the Task to Earn ₹2</h3>
-    <p>Join the following Telegram channels:</p>
-    <ul>
-        <li><a href="https://t.me/yourchannel1" target="_blank">Join Channel 1</a></li>
-        <li><a href="https://t.me/yourchannel2" target="_blank">Join Channel 2</a></li>
-        <li><a href="https://t.me/yourchannel3" target="_blank">Join Channel 3</a></li>
-        <li><a href="https://t.me/yourchannel4" target="_blank">Join Channel 4</a></li>
-    </ul>
-    <button id="verify-task-btn">Verify Task</button>
-</div>
-        <!-- Withdraw Section -->
-        <div id="withdraw-section">
+        <div class="result">
+            <p id="result-text">Spin to Win Rewards!</p>
+        </div>
+        <div class="withdraw-section">
             <p>Minimum Withdraw: ₹150</p>
             <button id="withdraw-btn">Withdraw</button>
         </div>
     </div>
-
-    <script src="scripts/main.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
