@@ -3,7 +3,7 @@ const spinButton = document.getElementById('spin-btn');
 const resultText = document.getElementById('result-text');
 const ctx = wheelCanvas.getContext('2d');
 
-const prizes = ["Bad Luck", "₹10", "Spin Again", "₹30", "Bad Luck", "₹50"];
+const prizes = ["Bad Luck", "₹10", "Spin Again", "₹30", "₹50", "₹100"];
 const colors = ["#FFDDC1", "#FFABAB", "#FFC3A0", "#D5AAFF", "#85E3FF", "#B9FBC0"];
 let startAngle = 0;
 const arc = Math.PI / (prizes.length / 2);
@@ -55,5 +55,19 @@ spinButton.addEventListener('click', () => {
     spinWheel();
 });
 
+// Button Logic
+document.getElementById('tasks-btn').addEventListener('click', () => {
+    alert("Complete tasks to earn more spins!");
+});
+
+document.getElementById('refer-btn').addEventListener('click', () => {
+    alert("Refer friends to earn extra rewards!");
+});
+
+document.getElementById('top-rank-btn').addEventListener('click', () => {
+    alert("Check the top invitation ranks!");
+});
+
 // Initialize Wheel
 drawWheel();
+
