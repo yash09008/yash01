@@ -1,47 +1,64 @@
 body {
     font-family: Arial, sans-serif;
+    background-color: #f7f7f7;
+    margin: 0;
+    padding: 0;
     text-align: center;
-    background-color: #f0f0f0;
 }
 
-#join-telegram {
+h1 {
+    color: #333;
+    margin: 20px 0;
+}
+
+.container {
     margin-top: 50px;
 }
 
-.btn {
-    background-color: #0088cc;
-    color: white;
-    padding: 10px 20px;
-    text-decoration: none;
-    border-radius: 5px;
-}
-
-#wheel-container {
+.wheel-container {
     position: relative;
-    margin: 20px auto;
-    width: 300px;
+    display: inline-block;
 }
 
-#wheel {
-    width: 100%;
+canvas {
+    border: 5px solid #333;
+    border-radius: 50%;
 }
 
 #spin-btn {
-    margin-top: 10px;
+    margin-top: 20px;
     padding: 10px 20px;
-    background-color: #ff9800;
+    font-size: 18px;
+    background-color: #ff5722;
     color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
 }
 
-#result {
-    margin: 20px;
-    font-size: 1.2em;
-    color: green;
+#spin-btn:hover {
+    background-color: #e64a19;
 }
 
-#withdraw-section {
-    margin-top: 20px;
+.result {
+    margin-top: 30px;
+    font-size: 20px;
+    color: #333;
+}
+
+.withdraw-section {
+    margin-top: 50px;
+}
+
+#withdraw-btn {
+    padding: 10px 20px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#withdraw-btn:hover {
+    background-color: #388e3c;
 }
